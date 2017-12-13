@@ -5,7 +5,8 @@ This module is a mere wrapper around nice [ini] package but adds some missing
 features:
 
 - environment sections merged with default
-- typecasting (values that look like numbers are numbers, not strings)
+- typecasting (values that look like numbers are returned as numbers, not 
+  strings)
 - fetch values from remote storage (only Azure Vault currently)
 
 It was made to achieve two things:
