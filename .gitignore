@@ -1,0 +1,6 @@
+# NOTE: Including compiled version of lib due to https://github.com/npm/npm/issues/3055
+# build/
+build/*.test.js
+.idea/
+node_modules/
+npm-debug.log
