@@ -1,5 +1,5 @@
-[2.0.0]
--------
+[2.0.0] - 2017-12-13
+--------------------
 - [x] Update readme
 - [x] Move from callbacks to async/await
 
