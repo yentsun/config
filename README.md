@@ -1,11 +1,19 @@
 YT Config
 =========
 
-This module is based mostly on [ini module] but adds some missing features:
+This module is a mere wrapper around nice [ini] package but adds some missing 
+features:
 
-- sections (environment) merge with default
-- typecasting
+- environment sections merged with default
+- typecasting (values that look like numbers are numbers, not strings)
 - fetch values from remote storage (only Azure Vault currently)
+
+It was made to achieve two things:
+
+- *never repeat config for different environments* - you have default sections
+  that are valid for any environment and you only override values that 
+  are different
+- *have all of the config in one file*
 
 
 Example
@@ -111,5 +119,5 @@ Test
 npm test
 ```
 
-[ini module]: https://www.npmjs.com/package/ini
+[ini]: https://www.npmjs.com/package/ini
 [example.js]: example/example.js
