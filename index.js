@@ -15,7 +15,7 @@ module.exports = async (filename) => {
     const environmentConfig = parsed[environment];
     const merged = merge(parsed.default, environmentConfig, {environment});
 
-    return await new Promise((resolve) => {
+    return new Promise((resolve) => {
         traverse(merged, ensureAsync(processNode), (config) => {
             return resolve(config);
         });
