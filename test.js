@@ -29,4 +29,12 @@ describe('config loader', () => {
         const config = await configLoader('test_configs/stageOnly.ini');
         assert.equal(config.secret, 'secret');
     });
+
+    it('rejects promise if there is no config file', async () => {
+        try {
+            await configLoader('no.ini');
+        } catch (error) {
+            assert.equal(error.message, 'ENOENT: no such file or directory, open \'no.ini\'');
+        }
+    });
 });
