@@ -1,12 +1,12 @@
 YT Config
 =========
 
-This module is a mere wrapper around nice [ini] package but adds some missing 
+This module is a wrapper around [ini] package but adds some missing
 features:
 
-- environment sections merged with default
-- typecasting (values that look like numbers are returned as numbers, not 
-  strings)
+- environment sections (merged with default)
+- basic typecasting (values that look like numbers are returned as numbers)
+- valid JSON values are returned parsed
 
 It was made to achieve two things:
 
