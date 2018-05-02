@@ -1,6 +1,10 @@
 YT Config
 =========
 
+[![Build Status](https://travis-ci.org/yentsun/config.svg?branch=master)](https://travis-ci.org/yentsun/config)
+[![Coverage Status](https://coveralls.io/repos/github/yentsun/config/badge.svg?branch=master)](https://coveralls.io/github/yentsun/config?branch=master)
+[![dependencies Status](https://david-dm.org/yentsun/config/status.svg)](https://david-dm.org/yentsun/config)
+
 This module is a wrapper around [ini] package but adds some missing
 features:
 
