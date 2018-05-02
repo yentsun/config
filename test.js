@@ -20,9 +20,11 @@ describe('config loader', () => {
     });
 
     it('returns foreign config', async () => {
+        process.env.YT_TIMEOUT = '3000';
         const config = await configLoader('test_configs/foreign.ini');
-        assert.equal(config.db.host, 'dummy value');
+        assert.equal(config.db.host, 'dummy value of TEST_VALUE');
         assert.equal(config.db.secret, 'secret');
+        assert.strictEqual(config.timeout, 3000);
     });
 
     it('returns default config if the environment is not described', async () => {
