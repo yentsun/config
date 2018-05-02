@@ -1,6 +1,9 @@
 dist: xenial
 language: node_js
 
+npm:
+ - 6.0.0
+
 node_js:
   - lts/*
 
