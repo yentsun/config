@@ -1,3 +1,8 @@
+[2.1.0]
+-------
+- [ ] Remove Azure plugin
+
+
 [2.0.2] - 2018-03-26
 --------------------
 - [x] Fix promise rejection #1

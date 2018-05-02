@@ -7,7 +7,6 @@ features:
 - environment sections merged with default
 - typecasting (values that look like numbers are returned as numbers, not 
   strings)
-- fetch values from remote storage (only Azure Vault currently)
 
 It was made to achieve two things:
 
@@ -95,22 +94,6 @@ host = some.host
 user = some_user
 password = ENV::DB_PASSWORD
 ```
-
-Or even from Azure Vault (experimental):
-
-```ini
-[default.db]
-port = 3636
-host = some.host
-user = some_user
-password = AZURE::db-password
-```
-
-This will work provided you have Azure SDK credentials in your env:
-
-- `AZURE_CLIENT_ID`
-- `AZURE_CLIENT_SECRET`
-- `AZURE_VAULT_URI`
 
 
 Test
