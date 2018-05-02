@@ -1,3 +1,11 @@
+[2.1.0] - 2018-05-02
+--------------------
+- [x] Remove Azure plugin
+- [x] Add Travis CI
+- [x] Drop `async` dependency
+- [x] Typecast foreign values
+
+
 [2.0.2] - 2018-03-26
 --------------------
 - [x] Fix promise rejection #1

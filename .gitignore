@@ -1,6 +1,3 @@
-# NOTE: Including compiled version of lib due to https://github.com/npm/npm/issues/3055
-# build/
-build/*.test.js
+.nyc_output/
 .idea/
 node_modules/
-npm-debug.log
