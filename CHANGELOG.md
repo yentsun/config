@@ -1,3 +1,8 @@
+[2.1.1] - 2018-05-08
+--------------------
+- [x] Update validator dependency
+
+
 [2.1.0] - 2018-05-02
 --------------------
 - [x] Remove Azure plugin

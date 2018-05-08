@@ -1,6 +1,6 @@
 {
   "name": "yt-config",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "An ini-based advanced config module",
   "main": "index.js",
   "scripts": {
@@ -28,6 +28,6 @@
     "ini": "^1.3.4",
     "lodash.merge": "^4.6.1",
     "traverse-async": "^0.1.6",
-    "validator": "^9.4.1"
+    "validator": "^10.1.0"
   }
 }
