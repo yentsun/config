@@ -1,4 +1,7 @@
 {
+const external = require('./external');
+
+
 function mount(target, path, value) {
 
     // credits: https://stackoverflow.com/a/2061827/216042
@@ -34,7 +37,7 @@ JSONString = json: (JSONOpen String JSONClose) {
 }
 Pair = key: Key Separator value: Value CommentInline* (EOL+ / EOF) {return [key, value]}
 Key = chars: [a-zA-Z0-9_\[\] ]+ {return chars.join('').trim()}
-Value = JSONString / Null / Boolean / Number / String
+Value = ExternalValue / JSONString / Null / Boolean / Number / String
 Separator = WS* ("=" / ":") WS*
 WS = ' '+
 String = chars: (!(EOL / CommentMarker / JSONOpen / JSONClose) .)*  {return chars.map(v => v[1]).join('').trim()}
@@ -43,10 +46,13 @@ Boolean = True / False
 True = ('true' / 'on') WS* {return true}
 False = ('false' / 'off') WS* {return false}
 Null = 'null' {return null}
-EOL = "\r\n" / '\n' / '\r'
+EOL = '\r\n' / '\n' / '\r'
 EOF = !.
 JSONOpen = "[" / "{"
 JSONClose = "]" / "}"
 CommentInline = CommentMarker String
 Comment = CommentMarker String? EOL+
+ExternalValue = module: ExternalModule ExternalSep key: Key {return external(module, key)}
+ExternalModule = chars: [A-Z]+ {return chars.join('')}
+ExternalSep = '::'
 CommentMarker = (';' / '#')+

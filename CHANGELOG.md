@@ -1,3 +1,11 @@
+[3.0.0]
+-------
+- [x] ini dependency dropped
+- [x] traverse-async dependency dropped
+- [x] validator dependency dropped
+- [x] throws on unknown external module
+
+
 [2.1.1] - 2018-05-08
 --------------------
 - [x] Update validator dependency
