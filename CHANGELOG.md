@@ -1,3 +1,8 @@
+[3.0.1]
+-------
+- [ ] Increase code coverage
+
+
 [3.0.0]
 -------
 - [x] ini dependency dropped

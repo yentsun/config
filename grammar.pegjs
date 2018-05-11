@@ -35,7 +35,7 @@ JSONString = json: (JSONOpen String JSONClose) {
     try {return JSON.parse(json.join(''))}
     catch (e) {return json.join('')}
 }
-Pair = key: Key Separator value: Value CommentInline* (EOL+ / EOF) {return [key, value]}
+Pair = key: Key Separator value: Value (EOL+ / EOF) {return [key, value]}
 Key = chars: [a-zA-Z0-9_\[\] ]+ {return chars.join('').trim()}
 Value = ExternalValue / JSONString / Null / Boolean / Number / String
 Separator = WS* ("=" / ":") WS*
@@ -50,9 +50,8 @@ EOL = '\r\n' / '\n' / '\r'
 EOF = !.
 JSONOpen = "[" / "{"
 JSONClose = "]" / "}"
-CommentInline = CommentMarker String
 Comment = CommentMarker String? CommentMarker* EOL+
 ExternalValue = module: ExternalModule ExternalSep key: Key {return external(module, key)}
-ExternalModule = chars: [A-Z]+ {return chars.join('')}
+ExternalModule = chars: [a-zA-Z0-9]+ {return chars.join('')}
 ExternalSep = '::'
 CommentMarker = (';' / '#')+
