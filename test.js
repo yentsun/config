@@ -15,13 +15,19 @@ describe('config loader', () => {
         assert.strictEqual(config.array[0], 'one');
         assert.strictEqual(config.array[2], 'three');
         assert.strictEqual(config.array[3], 3);
+        assert.strictEqual(config.arrayDecimal[0], 10.5);
+        assert.strictEqual(config.arrayDecimal[1], 12.43);
+        assert.isTrue(config.switchOne);
+        assert.isFalse(config.switchTwo);
+        assert.isTrue(config.flag);
+        assert.isFalse(config.falseFlag);
         assert.equal(config.keyDEV, 'dev');
         assert.equal(config.log.level, 'INFO');
     });
 
     it('returns foreign config', async () => {
         process.env.YT_TIMEOUT = '3000';
-        const config = await configLoader('test_configs/foreign.ini');
+        const config = await configLoader('test_configs/external.ini');
         assert.equal(config.db.host, 'dummy value of TEST_VALUE');
         assert.equal(config.db.secret, 'secret');
         assert.strictEqual(config.timeout, 3000);
@@ -30,6 +36,15 @@ describe('config loader', () => {
     it('returns default config if the environment is not described', async () => {
         const config = await configLoader('test_configs/stageOnly.ini');
         assert.equal(config.secret, 'secret');
+        assert.notExists(config.host);
+    });
+
+    it('throws for unknown external', async () => {
+        try {
+            await configLoader('test_configs/unknown.ini');
+        } catch (error) {
+            assert.equal(error.message, 'Unknown external module ZALGO');
+        }
     });
 
     it('rejects promise if there is no config file', async () => {
@@ -37,6 +52,14 @@ describe('config loader', () => {
             await configLoader('no.ini');
         } catch (error) {
             assert.equal(error.message, 'ENOENT: no such file or directory, open \'no.ini\'');
+        }
+    });
+
+    it('throws on incorrect syntax', async () => {
+        try {
+            await configLoader('test_configs/bad.ini');
+        } catch (error) {
+            assert.equal(error.message, 'Expected " ", ":", "=", or [a-zA-Z0-9_[\\] ] but end of input found.');
         }
     });
 });
