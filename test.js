@@ -15,6 +15,12 @@ describe('config loader', () => {
         assert.strictEqual(config.array[0], 'one');
         assert.strictEqual(config.array[2], 'three');
         assert.strictEqual(config.array[3], 3);
+        assert.strictEqual(config.arrayDecimal[0], 10.5);
+        assert.strictEqual(config.arrayDecimal[1], 12.43);
+        assert.isTrue(config.switchOne);
+        assert.isFalse(config.switchTwo);
+        assert.isTrue(config.flag);
+        assert.isFalse(config.falseFlag);
         assert.equal(config.keyDEV, 'dev');
         assert.equal(config.log.level, 'INFO');
     });
@@ -46,6 +52,14 @@ describe('config loader', () => {
             await configLoader('no.ini');
         } catch (error) {
             assert.equal(error.message, 'ENOENT: no such file or directory, open \'no.ini\'');
+        }
+    });
+
+    it('throws on incorrect syntax', async () => {
+        try {
+            await configLoader('test_configs/bad.ini');
+        } catch (error) {
+            assert.equal(error.message, 'Expected " ", ":", "=", or [a-zA-Z0-9_[\\] ] but end of input found.');
         }
     });
 });
