@@ -15,6 +15,12 @@
   "contributors": [
     "Andrey Tselishchev"
   ],
+  "keywords": [
+    "ini",
+    "config",
+    "configuration",
+    "pegjs"
+  ],
   "engines": {
     "node": "lts"
   },
