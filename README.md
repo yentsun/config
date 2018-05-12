@@ -6,18 +6,20 @@ YT Config
 [![dependencies Status](https://david-dm.org/yentsun/config/status.svg)](https://david-dm.org/yentsun/config)
 [![Known Vulnerabilities](https://snyk.io/test/github/yentsun/config/badge.svg?targetFile=package.json)](https://snyk.io/test/github/yentsun/config?targetFile=package.json)
 
-This module is a wrapper around [ini] package but adds some missing
-features:
+This module has been designed to substitute existing ini-config parsers
+out there. Some of which lack typecasting, some have too many
+dependencies, none of them merges configs according to environment.
 
+Main features:
 - environment sections (merged with default)
 - basic typecasting (values that look like numbers are returned as numbers)
-- valid JSON values are returned parsed
+- valid JSON strings are parsed
+- no dependencies other than `lodash.merge`
+- parsing is done via PEG.js grammar
 
-It was made to achieve two things:
-
-- *never repeat config for different environments* - you have default sections
-  that are valid for any environment and you only override values that 
-  are different
+Apart from parsing ini format, it achieves two things:
+- *never repeat config for different environments* - you have 'default'
+  section you override values that are different for other environments
 - *have all of the config in one file*
 
 
@@ -28,40 +30,75 @@ This ini:
 
 ```ini
 [default]
-array = [1, 2, 3, 4, 5]
-decimal = 20.5
+negInt = -1
+posInt = 2
+keyDecimal = 10.5
+arrayDecimal[] = -10.5
+arrayDecimal[] = 12.43
+switchOne = on
+switchTwo = off
+flag = true
+falseFlag = false
+null:null
 
-[default.db]
-port = 3636
-host = some.host
+[default.log]
+level = DEBUG
 
-[development.db]
-host = localhost
 
-[production.db]
-host = production.host
+; DEVELOPMENT
+
+[development]
+keyDEV = dev
+array = ["one", "two", "three", 3]
+
+[development.log]
+level = INFO
+
+
+; STAGING
+
+[staging]
+keySTG = stagingValue
+
+[staging.log]
+level = ERROR
 ```
 
 will result in the following config object:
 
 ```js
-{ array: [ 1, 2, 3, 4, 5 ],
-  decimal: 20.5,
-  db: { port: 3636, host: 'localhost' },
+{ negInt: -1,
+  posInt: 2,
+  keyDecimal: 10.5,
+  arrayDecimal: [ -10.5, 12.43 ],
+  switchOne: true,
+  switchTwo: false,
+  flag: true,
+  falseFlag: false,
+  null: null,
+  log: { level: 'INFO' },
+  keyDEV: 'dev',
+  array: [ 'one', 'two', 'three', 3 ],
   environment: 'development' }
-
 ```
 
 *(`development` is the default environment)*
 
-If we set `NODE_ENV` to `production`:
+If we set `NODE_ENV` to `staging`:
 
 ```js
-{ array: [ 1, 2, 3, 4, 5 ],
-  decimal: 20.5,
-  db: { port: 3636, host: 'production.host' },
-  environment: 'production' }
-
+{ negInt: -1,
+  posInt: 2,
+  keyDecimal: 10.5,
+  arrayDecimal: [ -10.5, 12.43 ],
+  switchOne: true,
+  switchTwo: false,
+  flag: true,
+  falseFlag: false,
+  null: null,
+  log: { level: 'ERROR' },
+  keySTG: 'stagingValue',
+  environment: 'staging' }
 ```
 
 For a working example see [example.js]
@@ -108,5 +145,4 @@ Test
 npm test
 ```
 
-[ini]: https://www.npmjs.com/package/ini
 [example.js]: example/example.js
