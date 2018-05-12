@@ -17,6 +17,13 @@ module.exports = (filename) => {
             const merged = merge(parsed.default, environmentConfig, {environment});
             return resolve(merged);
         } catch (error) {
+            if (error.location) {
+                const {start: {line, column}} = error.location;
+                const e = new Error(`INI parser failed '${error.message}'`);
+                e.original = error;
+                e.stack = `    at ${filename}:${line}:${column}\n${error.stack.split('\n').slice(2).join('\n')}`;
+                reject(e);
+            }
             reject(error);
         }
     });
