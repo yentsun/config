@@ -21,7 +21,7 @@ module.exports = (filename) => {
                 const {start: {line, column}} = error.location;
                 const e = new Error(`INI parser failed '${error.message}'`);
                 e.original = error;
-                e.stack = `    at ${filename}:${line}:${column}\n${error.stack.split('\n').slice(2).join('\n')}`;
+                e.stack = `    at ${filename}:${line}:${column}\n${error.stack.split('\n').slice(1).join('\n')}`;
                 reject(e);
             }
             reject(error);

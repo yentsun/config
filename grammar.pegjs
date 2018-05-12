@@ -37,15 +37,19 @@ JSONString = json: (JSONOpen String JSONClose) {
 }
 Pair = key: Key Separator value: Value (EOL+ / EOF) {return [key, value]}
 Key = chars: [a-zA-Z0-9_\[\] ]+ {return chars.join('').trim()}
-Value = ExternalValue / JSONString / Null / Boolean / Number / String
+Value = JSONString / ExternalValue / Null / Boolean / Float / Number / String
 Separator = WS* ("=" / ":") WS*
 WS = ' '+
+Char = (!EOL .)
 String = chars: (!(EOL / CommentMarker / JSONOpen / JSONClose) .)*  {return chars.map(v => v[1]).join('').trim()}
-Number = digits: [0-9.]+ {return Number(digits.join(""))}
+Digit = [0-9]
+Minus = '-'
+Float = num: Number '.' right: Digit+ {return Number(num + '.' + right.join(''))}
+Number = m: Minus? digits: Digit+ {return Number((m || '') + digits.join(""))}
 Boolean = True / False
-True = ('true' / 'on') WS* {return true}
-False = ('false' / 'off') WS* {return false}
-Null = 'null' {return null}
+True = ('true' / 'on') !Char {return true}
+False = ('false' / 'off') !Char {return false}
+Null = 'null' !Char {return null}
 EOL = '\r\n' / '\n' / '\r'
 EOF = !.
 JSONOpen = "[" / "{"

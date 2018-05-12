@@ -9,18 +9,21 @@ describe('config loader', () => {
     it('returns basic config', async () => {
         const config = await configLoader('test_configs/basic.ini');
         assert.equal(config.environment, 'development');
-        assert.strictEqual(config.keyOne, 1);
-        assert.strictEqual(config.keyTwo, 2);
+        assert.strictEqual(config.negInt, -1);
+        assert.strictEqual(config.posInt, 2);
         assert.strictEqual(config.keyDecimal, 10.5);
         assert.strictEqual(config.array[0], 'one');
         assert.strictEqual(config.array[2], 'three');
         assert.strictEqual(config.array[3], 3);
-        assert.strictEqual(config.arrayDecimal[0], 10.5);
+        assert.strictEqual(config.arrayDecimal[0], -10.5);
         assert.strictEqual(config.arrayDecimal[1], 12.43);
+        assert.strictEqual(config.trueLies, 'trueLies');
+        assert.strictEqual(config.falseLies, 'falseLies');
         assert.isTrue(config.switchOne);
         assert.isFalse(config.switchTwo);
         assert.isTrue(config.flag);
         assert.isFalse(config.falseFlag);
+        assert.isNull(config.null);
         assert.equal(config.keyDEV, 'dev');
         assert.equal(config.log.level, 'INFO');
     });
@@ -59,7 +62,7 @@ describe('config loader', () => {
         try {
             await configLoader('test_configs/bad.ini');
         } catch (error) {
-            assert.equal(error.message, 'Expected " ", ":", "=", or [a-zA-Z0-9_[\\] ] but end of input found.');
+            assert.equal(error.message, `INI parser failed 'Expected " ", ":", "=", or [a-zA-Z0-9_[\\] ] but end of input found.'`);
         }
     });
 });
