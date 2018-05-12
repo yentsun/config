@@ -3,8 +3,8 @@
 - [ ] Increase code coverage
 
 
-[3.0.0]
--------
+[3.0.0] - 2018-05-12
+--------------------
 - [x] ini dependency dropped
 - [x] traverse-async dependency dropped
 - [x] validator dependency dropped
