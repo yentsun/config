@@ -19,7 +19,7 @@ Main features:
 
 Apart from parsing ini format, it achieves two things:
 - *never repeat config for different environments* - you have 'default'
-  section you override values that are different for other environments
+  section and you override values that differ for other environments
 - *have all of the config in one file*
 
 
