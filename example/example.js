@@ -1,4 +1,4 @@
-const configLoader = require('../index');
+const configLoader = require('../');
 
 
 async function main() {

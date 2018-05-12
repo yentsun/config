@@ -1,3 +1,16 @@
+[3.0.1]
+-------
+- [ ] Increase code coverage
+
+
+[3.0.0] - 2018-05-12
+--------------------
+- [x] ini dependency dropped
+- [x] traverse-async dependency dropped
+- [x] validator dependency dropped
+- [x] throws on unknown external module
+
+
 [2.1.1] - 2018-05-08
 --------------------
 - [x] Update validator dependency
