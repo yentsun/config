@@ -20,6 +20,10 @@ const dict = {};
 
 Result = (Comment / Section)+ EOF {return dict}
 Section = name: SectionHeader  pairs: Pair+ {const value = pairs.reduce((res, [k, v]) => {
+    if (typeof v === 'string' && v.includes('::')) {
+        const [environment] = name.split('.');
+        v = external(environment, v)
+    }
     if (k.includes('[]')) {
         const key = k.replace('[]', '');
         res[key] ? res[key].push(v) : res[key] = [v];
@@ -37,7 +41,7 @@ JSONString = json: (JSONOpen String JSONClose) {
 }
 Pair = key: Key Separator value: Value (EOL+ / EOF) {return [key, value]}
 Key = chars: [a-zA-Z0-9_\[\] ]+ {return chars.join('').trim()}
-Value = JSONString / ExternalValue / Null / Boolean / Float / Number / String
+Value = JSONString / Null / Boolean / Float / Number / String
 Separator = WS* ("=" / ":") WS*
 WS = ' '+
 Char = (!EOL .)
@@ -55,7 +59,4 @@ EOF = !.
 JSONOpen = "[" / "{"
 JSONClose = "]" / "}"
 Comment = CommentMarker String? CommentMarker* EOL+
-ExternalValue = module: ExternalModule ExternalSep key: Key {return external(module, key)}
-ExternalModule = chars: [a-zA-Z0-9]+ {return chars.join('')}
-ExternalSep = '::'
 CommentMarker = (';' / '#')+

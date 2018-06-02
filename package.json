@@ -1,6 +1,6 @@
 {
   "name": "yt-config",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "An ini-based advanced config module",
   "main": "index.js",
   "scripts": {
@@ -14,6 +14,12 @@
   "author": "Max Korinets <mkorinets@gmail.com> (http://korinets.name/)",
   "contributors": [
     "Andrey Tselishchev"
+  ],
+  "keywords": [
+    "ini",
+    "config",
+    "configuration",
+    "pegjs"
   ],
   "engines": {
     "node": "lts"
