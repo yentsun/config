@@ -3,8 +3,8 @@
 - [ ] Increase code coverage
 
 
-[3.0.1]
--------
+[3.0.1] - 2018-06-02
+--------------------
 - [x] External values ignored on other environments
 
 
