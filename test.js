@@ -1,6 +1,4 @@
-const assert = require('chai').assert;
-const describe = require('mocha').describe;
-const it = require('mocha').it;
+const {assert} = require('chai');
 const configLoader = require('./index');
 
 
@@ -33,6 +31,7 @@ describe('config loader', () => {
         const config = await configLoader('test_configs/external.ini');
         assert.equal(config.db.host, 'dummy value of TEST_VALUE');
         assert.equal(config.db.secret, 'secret');
+        assert.equal(config.db.user, 'dbUser');
         assert.strictEqual(config.timeout, 3000);
     });
 
