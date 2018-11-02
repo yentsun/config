@@ -3,10 +3,7 @@ const numeric = /^[+-]?([0-9]*[.])?[0-9]+$/;
 const modules = {
 
     env(key) {
-        if (!(key in process.env))
-            throw new Error(`Referenced environment variable "${key}" is not defined`);
-        else
-            return process.env[key];
+        return process.env[key];
     },
 
     dummy(key) {

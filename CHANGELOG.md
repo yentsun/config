@@ -1,6 +1,12 @@
-[3.0.2]
+[3.2.0]
 -------
 - [ ] Increase code coverage
+
+
+[3.1.0] - 2018-11-02
+--------------------
+- [x] Don't throw on empty env var
+- [x] Update dependencies
 
 
 [3.0.1] - 2018-06-02
