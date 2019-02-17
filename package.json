@@ -28,7 +28,7 @@
     "chai": "^4.2.0",
     "coveralls": "^3.0.2",
     "mocha": "^5.2.0",
-    "nyc": "^11.9.0"
+    "nyc": "^13.3.0"
   },
   "license": "UNLICENSED",
   "dependencies": {
