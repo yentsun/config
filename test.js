@@ -7,6 +7,8 @@ describe('config loader', () => {
     it('returns basic config', async () => {
         const config = await configLoader('test_configs/basic.ini');
         assert.equal(config.environment, 'development');
+        assert.strictEqual(config.token, '6606cec44b18aaca3ad82d7f16194dd4');
+        assert.strictEqual(config.uuid, '98e7d05e-5115-426d-ab60-a2799e95c403');
         assert.strictEqual(config.negInt, -1);
         assert.strictEqual(config.posInt, 2);
         assert.strictEqual(config.keyDecimal, 10.5);
