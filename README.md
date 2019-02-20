@@ -15,7 +15,6 @@ Main features:
 - basic typecasting (values that look like numbers are returned as numbers)
 - valid JSON strings are parsed
 - no dependencies other than `lodash.merge`
-- parsing is done via PEG.js grammar
 
 Apart from parsing ini format, it achieves two things:
 - *never repeat config for different environments* - you have 'default'
@@ -39,7 +38,6 @@ switchOne = on
 switchTwo = off
 flag = true
 falseFlag = false
-null:null
 
 [default.log]
 level = DEBUG
@@ -75,7 +73,6 @@ will result in the following config object:
   switchTwo: false,
   flag: true,
   falseFlag: false,
-  null: null,
   log: { level: 'INFO' },
   keyDEV: 'dev',
   array: [ 'one', 'two', 'three', 3 ],
