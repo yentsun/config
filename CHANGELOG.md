@@ -1,6 +1,7 @@
 [3.2.0]
 -------
 - [ ] Increase code coverage
+- [ ] Move away from PEG.js parser to custom one
 
 
 [3.1.0] - 2018-11-02

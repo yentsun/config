@@ -23,7 +23,7 @@ describe('config loader', () => {
         assert.isFalse(config.falseFlag);
         assert.isNull(config.null);
         assert.equal(config.keyDEV, 'dev');
-        assert.equal(config.log.level, 'INFO');
+        assert.equal(config.log.level, '[INFO]');
     });
 
     it('returns foreign config', async () => {
