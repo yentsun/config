@@ -9,6 +9,7 @@ describe('config loader', () => {
         assert.equal(config.environment, 'development');
         assert.strictEqual(config.token, '6606cec44b18aaca3ad82d7f16194dd4');
         assert.strictEqual(config.uuid, '98e7d05e-5115-426d-ab60-a2799e95c403');
+        assert.strictEqual(config.slashed, 'this\\that');
         assert.strictEqual(config.negInt, -1);
         assert.strictEqual(config.posInt, 2);
         assert.strictEqual(config.keyDecimal, 10.5);
@@ -17,8 +18,8 @@ describe('config loader', () => {
         assert.strictEqual(config.array[3], 3);
         assert.strictEqual(config.arrayDecimal[0], -10.5);
         assert.strictEqual(config.arrayDecimal[1], 12.43);
-        assert.strictEqual(config.trueLies, 'trueLies');
-        assert.strictEqual(config.falseLies, 'falseLies');
+        assert.strictEqual(config.trueLies, 'true Lies');
+        assert.strictEqual(config.falseLies, "false Lie's");
         assert.isOk(config['should be ok']);
         assert.isTrue(config.switchOne);
         assert.isFalse(config.switchTwo);
