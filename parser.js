@@ -1,21 +1,33 @@
+const resolveExrenal = require('./external');
+
+
+function isNumeric(val) {
+    return !isNaN(val);
+}
+
+function isQuoted(value) {
+    return (value.charAt(0) === '"' && value.slice(-1) === '"') ||
+        (value.charAt(0) === "'" && value.slice(-1) === "'")
+}
+
 function dotSplit (input) {
     return input
-    .replace(/\1/g, '\u0002LITERAL\\1LITERAL\u0002')
-    .replace(/\\\./g, '\u0001')
-    .split(/\./)
-    .map((part) => {
-        return part
-        .replace(/\1/g, '\\.')
-        .replace(/\2LITERAL\\1LITERAL\2/g, '\u0001')
+        .replace(/\1/g, '\u0002LITERAL\\1LITERAL\u0002')
+        .replace(/\\\./g, '\u0001')
+        .split(/\./)
+        .map((part) => {
+            return part
+                .replace(/\1/g, '\\.')
+                .replace(/\2LITERAL\\1LITERAL\2/g, '\u0001')
     })
 }
 
 module.exports = (input) => {
 
     const output = {};
-    let p = output;
+    let dummy = output;
     let section;
-    const re = /^\[([^\]]*)\]$|^([^=]+)(=(.*))?$/i;
+    const pattern = /^\[([^\]]*)\]$|^([^=]+)(=(.*))?$/i;
     const lines = input.split(/[\r\n]+/g);
 
     lines.forEach((line) => {
@@ -24,7 +36,7 @@ module.exports = (input) => {
         if (!line || line.match(/^\s*[;#]/))
             return;
 
-        const match = line.match(re);
+        const match = line.match(pattern);
 
         if (!match)
             return;
@@ -32,35 +44,47 @@ module.exports = (input) => {
         // section
         if (match[1]) {
             section = unsafe(match[1]);
-            p = output[section] = output[section] || {};
+            dummy = output[section] = output[section] || {};
             return;
         }
 
         let key = unsafe(match[2]);
         let value = match[3] ? unsafe(match[4]) : true;
 
-        switch (value) {
-            case 'true':
-            case 'false':
-            case 'null':
-                value = JSON.parse(value);
-        }
-
-        // Convert keys with '[]' suffix to an array
         if (key.length > 2 && key.slice(-2) === '[]') {
             key = key.substring(0, key.length - 2);
 
-            if (!p[key]) {
-                p[key] = [];
-            } else if (!Array.isArray(p[key])) {
-                p[key] = [p[key]];
+            if (!dummy[key]) {
+                dummy[key] = [];
+            } else if (!Array.isArray(dummy[key])) {
+                dummy[key] = [dummy[key]];
             }
         }
 
-        if (Array.isArray(p[key])) {
-            p[key].push(value);
+        // detect external config
+        if (typeof value === 'string' && value.includes('::')) {
+            value = resolveExrenal(value);
+        }
+
+        // type cast
+        if (['on', 'true'].includes(value)) {
+            value = true;
+        } else if (['off', 'false'].includes(value)) {
+            value = false;
+        } else if (isNumeric(value)) {
+            value = Number(value);
         } else {
-            p[key] = value;
+            try {
+                value = JSON.parse(value);
+            } catch (error) {
+                // mute errors
+            }
+        }
+
+        if (Array.isArray(dummy[key])) {
+            dummy[key].push(value);
+        } else {
+            dummy[key] = value;
         }
     });
 
@@ -71,34 +95,29 @@ module.exports = (input) => {
         }
 
         const parts = dotSplit(key);
-        let p = output;
+        let dummy = output;
         const last = parts.pop();
         const nl = last.replace(/\\\./g, '.');
 
         parts.forEach((part) => {
 
-            if (!p[part] || typeof p[part] !== 'object')
-                p[part] = {};
+            if (!dummy[part] || typeof dummy[part] !== 'object')
+                dummy[part] = {};
 
-            p = p[part];
+            dummy = dummy[part];
         });
 
-        if (p === output && nl === last) {
+        if (dummy === output && nl === last) {
             return false
         }
-        p[nl] = output[key];
+        dummy[nl] = output[key];
         return true;
-    }).forEach(function (del) {
+    }).forEach((del) => {
         delete output[del];
     });
 
     return output;
 };
-
-function isQuoted(value) {
-    return (value.charAt(0) === '"' && value.slice(-1) === '"') ||
-        (value.charAt(0) === "'" && value.slice(-1) === "'")
-}
 
 function unsafe(value) {
     value = (value || '').trim();
@@ -106,40 +125,43 @@ function unsafe(value) {
     if (isQuoted(value)) {
 
         if (value.charAt(0) === "'") {
-            value = value.substr(1, value.length - 2)
+            value = value.substring(1, value.length - 2);
         }
 
         try {
             value = JSON.parse(value)
         } catch (_) {}
+
     } else {
-        let esc = false;
-        let unesc = '';
+        let escape = false;
+        let unescape = '';
 
         for (let i = 0, l = value.length; i < l; i++) {
             const char = value.charAt(i);
 
-            if (esc) {
+            if (escape) {
 
-                if ('\\;#'.indexOf(char) !== -1) {
-                    unesc += char
+                if ('\\;#'.includes(char)) {
+                    unescape += char;
                 } else {
-                    unesc += '\\' + char
+                    unescape += '\\' + char;
                 }
-                esc = false
-            } else if (';#'.indexOf(char) !== -1) {
+
+                escape = false
+            } else if (';#'.includes(char)) {
                 break
             } else if (char === '\\') {
-                esc = true
+                escape = true
             } else {
-                unesc += char
+                unescape += char
             }
         }
-        if (esc) {
-            unesc += '\\'
+
+        if (escape) {
+            unescape += '\\';
         }
 
-        return unesc.trim()
+        return unescape.trim();
     }
-    return value
+    return value;
 }
