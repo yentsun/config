@@ -1,6 +1,6 @@
 const fs = require('fs');
 const {promisify} = require('util');
-const {parse} = require('./parser');
+const parse = require('./parser');
 const merge = require('lodash.merge');
 
 

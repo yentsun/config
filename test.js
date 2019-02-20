@@ -7,6 +7,8 @@ describe('config loader', () => {
     it('returns basic config', async () => {
         const config = await configLoader('test_configs/basic.ini');
         assert.equal(config.environment, 'development');
+        assert.strictEqual(config.token, '6606cec44b18aaca3ad82d7f16194dd4');
+        assert.strictEqual(config.uuid, '98e7d05e-5115-426d-ab60-a2799e95c403');
         assert.strictEqual(config.negInt, -1);
         assert.strictEqual(config.posInt, 2);
         assert.strictEqual(config.keyDecimal, 10.5);
@@ -17,17 +19,19 @@ describe('config loader', () => {
         assert.strictEqual(config.arrayDecimal[1], 12.43);
         assert.strictEqual(config.trueLies, 'trueLies');
         assert.strictEqual(config.falseLies, 'falseLies');
+        assert.isOk(config['should be ok']);
         assert.isTrue(config.switchOne);
         assert.isFalse(config.switchTwo);
         assert.isTrue(config.flag);
         assert.isFalse(config.falseFlag);
         assert.isNull(config.null);
         assert.equal(config.keyDEV, 'dev');
-        assert.equal(config.log.level, 'INFO');
+        assert.equal(config.log.level, '[INFO]');
     });
 
     it('returns foreign config', async () => {
         process.env.YT_TIMEOUT = '3000';
+        process.env.DB_SECRET = 'secret';
         const config = await configLoader('test_configs/external.ini');
         assert.equal(config.db.host, 'dummy value of TEST_VALUE');
         assert.equal(config.db.secret, 'secret');
@@ -43,7 +47,8 @@ describe('config loader', () => {
 
     it('throws for unknown external', async () => {
         try {
-            await configLoader('test_configs/unknown.ini');
+            const config = await configLoader('test_configs/unknown.ini');
+            assert.isUndefined(config);
         } catch (error) {
             assert.equal(error.message, 'Unknown external module ZALGO');
         }
@@ -51,17 +56,10 @@ describe('config loader', () => {
 
     it('rejects promise if there is no config file', async () => {
         try {
-            await configLoader('no.ini');
+            const config = await configLoader('no.ini');
+            assert.isUndefined(config);
         } catch (error) {
             assert.equal(error.message, 'ENOENT: no such file or directory, open \'no.ini\'');
-        }
-    });
-
-    it('throws on incorrect syntax', async () => {
-        try {
-            await configLoader('test_configs/bad.ini');
-        } catch (error) {
-            assert.equal(error.message, `INI parser failed 'Expected " ", ":", "=", or [a-zA-Z0-9_[\\] ] but end of input found.'`);
         }
     });
 });

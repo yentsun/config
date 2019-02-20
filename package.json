@@ -1,11 +1,10 @@
 {
   "name": "yt-config",
-  "version": "3.1.0",
+  "version": "4.0.0",
   "description": "An ini-based advanced config module",
   "main": "index.js",
   "scripts": {
-    "test": "mocha",
-    "generate": "npx pegjs --optimize speed --output parser.js grammar.pegjs"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -28,7 +27,7 @@
     "chai": "^4.2.0",
     "coveralls": "^3.0.2",
     "mocha": "^5.2.0",
-    "nyc": "^11.9.0"
+    "nyc": "^13.3.0"
   },
   "license": "UNLICENSED",
   "dependencies": {
