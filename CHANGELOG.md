@@ -1,6 +1,10 @@
-[4.0.0] - 2019-02-20
+[4.0.1] - 2019-02-20
 --------------------
 - [x] Increase code coverage
+
+
+[4.0.0] - 2019-02-20
+--------------------
 - [x] Move away from PEG.js parser to custom one
 
 
