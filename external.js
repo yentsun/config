@@ -14,7 +14,7 @@ const modules = {
 module.exports = (value) => {
     const [module, key] = value.split('::');
     const moduleName = module.toLowerCase();
-    if (!(moduleName in modules))
+    if (! (moduleName in modules))
         throw new Error(`Unknown external module ${module}`);
     const result = modules[moduleName](key);
     if (numeric.test(result))

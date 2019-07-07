@@ -30,13 +30,13 @@ describe('config loader', () => {
         assert.equal(config.log.level, '[INFO]');
     });
 
-    it('returns foreign config', async () => {
+    it('returns external config', async () => {
         process.env.YT_TIMEOUT = '3000';
         process.env.DB_SECRET = 'secret';
         const config = await configLoader('test_configs/external.ini');
-        assert.equal(config.db.host, 'dummy value of TEST_VALUE');
         assert.equal(config.db.secret, 'secret');
         assert.equal(config.db.user, 'dbUser');
+        assert.equal(config.db.host, 'dummy value of TEST_VALUE');
         assert.strictEqual(config.timeout, 3000);
     });
 
