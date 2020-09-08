@@ -60,7 +60,7 @@ describe('config loader', () => {
             const config = await configLoader('no.ini');
             assert.isUndefined(config);
         } catch (error) {
-            assert.equal(error.message, 'ENOENT: no such file or directory, open \'no.ini\'');
+            assert.isTrue(error.message.includes('ENOENT: no such file or directory'));
         }
     });
 });
