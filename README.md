@@ -5,7 +5,6 @@ YT Config
 [![codecov](https://codecov.io/gh/yentsun/config/branch/master/graph/badge.svg)](https://codecov.io/gh/yentsun/config)
 [![npm version](https://badge.fury.io/js/yt-config.svg)](https://badge.fury.io/js/yt-config)
 [![Node.js Version](https://img.shields.io/node/v/yt-config.svg)](https://nodejs.org/)
-[![License](https://img.shields.io/github/license/yentsun/config.svg)](https://github.com/yentsun/config/blob/master/LICENSE)
 
 This module has been designed to substitute existing ini-config parsers
 out there. Some of which lack typecasting, some have too many

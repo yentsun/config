@@ -1,3 +1,8 @@
+[5.0.3] - 2025-11-12
+--------------------
+- [x] Remove license badge from README
+
+
 [5.0.2] - 2025-11-12
 --------------------
 - [x] **Add GitHub Actions workflow** - Automated testing on Node.js 18.x, 20.x, 22.x across Ubuntu, Windows, macOS
