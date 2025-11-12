@@ -1,4 +1,4 @@
-const resolveExrenal = require('./external');
+import resolveExternal from './external.js';
 
 
 function isNumeric(val) {
@@ -6,24 +6,23 @@ function isNumeric(val) {
 }
 
 function isQuoted(value) {
-    return (value.charAt(0) === '"' && value.slice(-1) === '"') ||
+    return (
+        (value.charAt(0) === '"' && value.slice(-1) === '"') ||
         (value.charAt(0) === "'" && value.slice(-1) === "'")
+    );
 }
 
-function dotSplit (input) {
+function dotSplit(input) {
     return input
         .replace(/\1/g, '\u0002LITERAL\\1LITERAL\u0002')
         .replace(/\\\./g, '\u0001')
         .split(/\./)
         .map((part) => {
-            return part
-                .replace(/\1/g, '\\.')
-                .replace(/\2LITERAL\\1LITERAL\2/g, '\u0001')
-    })
+            return part.replace(/\1/g, '\\.').replace(/\2LITERAL\\1LITERAL\2/g, '\u0001');
+        });
 }
 
-module.exports = (input) => {
-
+export default (input) => {
     const output = {};
     let dummy = output;
     let section;
@@ -31,25 +30,22 @@ module.exports = (input) => {
     const lines = input.split(/[\r\n]+/g);
 
     lines.forEach((line) => {
-
         // empty line or comment - ignore
-        if (!line || line.match(/^\s*[;#]/))
-            return;
+        if (!line || line.match(/^\s*[;#]/)) return;
 
         const match = line.match(pattern);
 
-        if (!match)
-            return;
+        if (!match) return;
 
         // section
         if (match[1]) {
-            section = unsafe(match[1]);
+            section = sanitizeValue(match[1]);
             dummy = output[section] = output[section] || {};
             return;
         }
 
-        let key = unsafe(match[2]);
-        let value = match[3] ? unsafe(match[4]) : true;
+        let key = sanitizeValue(match[2]);
+        let value = match[3] ? sanitizeValue(match[4]) : true;
 
         if (key.length > 2 && key.slice(-2) === '[]') {
             key = key.substring(0, key.length - 2);
@@ -63,7 +59,7 @@ module.exports = (input) => {
 
         // detect external config
         if (typeof value === 'string' && value.includes('::')) {
-            value = resolveExrenal(value);
+            value = resolveExternal(value);
         }
 
         // type cast
@@ -76,7 +72,7 @@ module.exports = (input) => {
         } else {
             try {
                 value = JSON.parse(value);
-            } catch (error) {
+            } catch (_error) {
                 // mute errors
             }
         }
@@ -88,50 +84,47 @@ module.exports = (input) => {
         }
     });
 
-    Object.keys(output).filter((key) => {
+    Object.keys(output)
+        .filter((key) => {
+            if (!output[key] || typeof output[key] !== 'object' || Array.isArray(output[key])) {
+                return false;
+            }
 
-        if (!output[key] || typeof output[key] !== 'object' || Array.isArray(output[key])) {
-            return false;
-        }
+            const parts = dotSplit(key);
+            let dummy = output;
+            const last = parts.pop();
+            const nl = last.replace(/\\\./g, '.');
 
-        const parts = dotSplit(key);
-        let dummy = output;
-        const last = parts.pop();
-        const nl = last.replace(/\\\./g, '.');
+            parts.forEach((part) => {
+                if (!dummy[part] || typeof dummy[part] !== 'object') dummy[part] = {};
 
-        parts.forEach((part) => {
+                dummy = dummy[part];
+            });
 
-            if (!dummy[part] || typeof dummy[part] !== 'object')
-                dummy[part] = {};
-
-            dummy = dummy[part];
+            if (dummy === output && nl === last) {
+                return false;
+            }
+            dummy[nl] = output[key];
+            return true;
+        })
+        .forEach((del) => {
+            delete output[del];
         });
-
-        if (dummy === output && nl === last) {
-            return false
-        }
-        dummy[nl] = output[key];
-        return true;
-    }).forEach((del) => {
-        delete output[del];
-    });
 
     return output;
 };
 
-function unsafe(value) {
+function sanitizeValue(value) {
     value = (value || '').trim();
 
     if (isQuoted(value)) {
-
         if (value.charAt(0) === "'") {
             value = value.substring(1, value.length - 2);
         }
 
         try {
-            value = JSON.parse(value)
-        } catch (_) {}
-
+            value = JSON.parse(value);
+        } catch (_error) {}
     } else {
         let escape = false;
         let unescape = '';
@@ -140,20 +133,19 @@ function unsafe(value) {
             const char = value.charAt(i);
 
             if (escape) {
-
                 if ('\\;#'.includes(char)) {
                     unescape += char;
                 } else {
                     unescape += '\\' + char;
                 }
 
-                escape = false
+                escape = false;
             } else if (';#'.includes(char)) {
-                break
+                break;
             } else if (char === '\\') {
-                escape = true
+                escape = true;
             } else {
-                unescape += char
+                unescape += char;
             }
         }
 

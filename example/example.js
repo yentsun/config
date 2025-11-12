@@ -1,4 +1,4 @@
-const configLoader = require('../');
+import configLoader from '../index.js';
 
 
 async function main() {

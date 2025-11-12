@@ -1,9 +1,8 @@
-const {assert} = require('chai');
-const configLoader = require('./index');
+import assert from 'assert';
+import configLoader from './index.js';
 
 
 describe('config loader', () => {
-
     it('returns basic config', async () => {
         const config = await configLoader('test_configs/basic.ini');
         assert.equal(config.environment, 'development');
@@ -20,12 +19,12 @@ describe('config loader', () => {
         assert.strictEqual(config.arrayDecimal[1], 12.43);
         assert.strictEqual(config.trueLies, 'true Lies');
         assert.strictEqual(config.falseLies, "false Lie's");
-        assert.isOk(config['should be ok']);
-        assert.isTrue(config.switchOne);
-        assert.isFalse(config.switchTwo);
-        assert.isTrue(config.flag);
-        assert.isFalse(config.falseFlag);
-        assert.isNull(config.null);
+        assert.ok(config['should be ok']);
+        assert.strictEqual(config.switchOne, true);
+        assert.strictEqual(config.switchTwo, false);
+        assert.strictEqual(config.flag, true);
+        assert.strictEqual(config.falseFlag, false);
+        assert.strictEqual(config.null, null);
         assert.equal(config.keyDEV, 'dev');
         assert.equal(config.log.level, '[INFO]');
     });
@@ -43,13 +42,13 @@ describe('config loader', () => {
     it('returns default config if the environment is not described', async () => {
         const config = await configLoader('test_configs/stageOnly.ini');
         assert.equal(config.secret, 'secret');
-        assert.notExists(config.host);
+        assert.strictEqual(config.host, undefined);
     });
 
     it('throws for unknown external', async () => {
         try {
-            const config = await configLoader('test_configs/unknown.ini');
-            assert.isUndefined(config);
+            await configLoader('test_configs/unknown.ini');
+            assert.fail('Should have thrown an error');
         } catch (error) {
             assert.equal(error.message, 'Unknown external module ZALGO');
         }
@@ -57,10 +56,10 @@ describe('config loader', () => {
 
     it('rejects promise if there is no config file', async () => {
         try {
-            const config = await configLoader('no.ini');
-            assert.isUndefined(config);
+            await configLoader('no.ini');
+            assert.fail('Should have thrown an error');
         } catch (error) {
-            assert.isTrue(error.message.includes('ENOENT: no such file or directory'));
+            assert.ok(error.message.includes('ENOENT: no such file or directory'));
         }
     });
 });
