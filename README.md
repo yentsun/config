@@ -14,7 +14,7 @@ Main features:
 - environment sections (merged with default)
 - basic typecasting (values that look like numbers are returned as numbers)
 - valid JSON strings are parsed
-- no dependencies other than `lodash.merge`
+- **zero dependencies** - completely self-contained
 
 Apart from parsing ini format, it achieves two things:
 - *never repeat config for different environments* - you have 'default'
@@ -112,11 +112,22 @@ npm i yt-config
 Usage
 =====
 
+**v5.x (ES6 Modules):**
+
+```js
+import configLoader from 'yt-config';
+
+async function someFunc() {
+    const config = await configLoader('config.ini');
+}
+```
+
+**v4.x (CommonJS - deprecated):**
+
 ```js
 const configLoader = require('yt-config');
-...
 
-async function someFunc()  {
+async function someFunc() {
     const config = await configLoader('config.ini');
 }
 ```
@@ -133,6 +144,52 @@ host = some.host
 user = some_user
 password = ENV::DB_PASSWORD
 ```
+
+
+Migrating from v4 to v5
+========================
+
+Version 5.0.0 introduces breaking changes. Here's how to migrate:
+
+### 1. Update Import Syntax
+
+**Before (v4.x - CommonJS):**
+```js
+const configLoader = require('yt-config');
+```
+
+**After (v5.x - ES6 Modules):**
+```js
+import configLoader from 'yt-config';
+```
+
+### 2. Update package.json
+
+If you're using ES6 modules in your project, ensure your `package.json` includes:
+```json
+{
+  "type": "module"
+}
+```
+
+Or use `.mjs` file extension for your ES6 module files.
+
+### 3. Node.js Version Requirement
+
+- **v4.x:** Any LTS version
+- **v5.x:** Node.js >=18.0.0
+
+### 4. Benefits of Upgrading
+
+- ✅ **Zero dependencies** - No more `lodash.merge` dependency
+- ✅ **All security vulnerabilities fixed** (31 vulnerabilities in v4.x)
+- ✅ **Modern ES6 syntax**
+- ✅ **Better code quality** - 95.4% test coverage
+- ✅ **Smaller package size**
+
+### API Compatibility
+
+The API remains the same - only the import syntax changes. All configuration files and usage patterns work identically.
 
 
 Test

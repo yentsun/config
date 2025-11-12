@@ -12,7 +12,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - External value resolution from environment variables (e.g., `ENV::DB_PASSWORD`)
 - Nested configuration via dot notation (e.g., `[default.log]`)
 - Array support using `[]` suffix syntax
-- Single dependency: `lodash.merge`
+- **Zero dependencies** - Completely self-contained
 
 ## Development Commands
 

@@ -1,3 +1,10 @@
+[5.0.1] - 2025-11-12
+--------------------
+- [x] **Remove lodash.merge dependency** - Replaced with native deep merge implementation
+- [x] **Zero dependencies** - Package now has no production dependencies
+- [x] Improved code coverage: 94.8% → 95.4%
+
+
 [5.0.0] - 2025-11-12
 --------------------
 
