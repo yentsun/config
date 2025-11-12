@@ -1,6 +1,6 @@
 {
     "name": "yt-config",
-    "version": "5.0.1",
+    "version": "5.0.2",
     "description": "An ini-based advanced config module",
     "type": "module",
     "main": "index.js",
