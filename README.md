@@ -1,10 +1,11 @@
 YT Config
 =========
 
-[![Build Status](https://travis-ci.org/yentsun/config.svg?branch=master)](https://travis-ci.org/yentsun/config)
-[![Coverage Status](https://coveralls.io/repos/github/yentsun/config/badge.svg?branch=master)](https://coveralls.io/github/yentsun/config?branch=master)
-[![dependencies Status](https://david-dm.org/yentsun/config/status.svg)](https://david-dm.org/yentsun/config)
-[![Known Vulnerabilities](https://snyk.io/test/github/yentsun/config/badge.svg?targetFile=package.json)](https://snyk.io/test/github/yentsun/config?targetFile=package.json)
+[![Tests](https://github.com/yentsun/config/actions/workflows/test.yml/badge.svg)](https://github.com/yentsun/config/actions/workflows/test.yml)
+[![codecov](https://codecov.io/gh/yentsun/config/branch/master/graph/badge.svg)](https://codecov.io/gh/yentsun/config)
+[![npm version](https://badge.fury.io/js/yt-config.svg)](https://badge.fury.io/js/yt-config)
+[![Node.js Version](https://img.shields.io/node/v/yt-config.svg)](https://nodejs.org/)
+[![License](https://img.shields.io/github/license/yentsun/config.svg)](https://github.com/yentsun/config/blob/master/LICENSE)
 
 This module has been designed to substitute existing ini-config parsers
 out there. Some of which lack typecasting, some have too many

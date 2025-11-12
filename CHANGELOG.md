@@ -3,6 +3,9 @@
 - [x] **Remove lodash.merge dependency** - Replaced with native deep merge implementation
 - [x] **Zero dependencies** - Package now has no production dependencies
 - [x] Improved code coverage: 94.8% → 95.4%
+- [x] **Add GitHub Actions workflow** - Automated testing on Node.js 18.x, 20.x, 22.x across Ubuntu, Windows, macOS
+- [x] **Add Codecov integration** - Automated code coverage reporting
+- [x] **Update README badges** - Replace deprecated Travis CI, Coveralls, David-dm with GitHub Actions, Codecov, npm version
 
 
 [5.0.0] - 2025-11-12

@@ -1,0 +1,21 @@
+{
+    "all": true,
+    "include": [
+        "index.js",
+        "parser.js",
+        "external.js"
+    ],
+    "exclude": [
+        "test.js",
+        "example/**",
+        "node_modules/**",
+        "coverage/**"
+    ],
+    "reporter": [
+        "text",
+        "html",
+        "lcov",
+        "json"
+    ],
+    "check-coverage": false
+}
